@@ -1,0 +1,102 @@
+# Day 1
+
+# 동기 부여
+
+## 하스켈의 특징
+* 순수 함수형     -> 함수는 IO를 할 수 없다
+* 고차 함수       -> 함수를 입력으로 받거나 결과로 주는 함수를 정의할 수 있다
+* 느긋한 평가     -> 필수적인 계산만 수행, 공유의 적극적 활용
+* 정적 타입       -> 런타임 타입 에러가 발생하지 않는다
+* 타입 추론       -> 타입은 필요할 때만 명시하면 충분하다
+* 대수적 자료형   -> 튜플, 합 타입, 재귀적 타입
+* 매개변수 다형성 -> 더 좋은 *Java Generic*
+* 타입클래스      -> 더 좋은 *Java Interface*
+
+## 구현상의 특징 (GHC)
+* 네이티브 컴파일, 쓰레기 수집기 탑재
+* Java와 비슷한 수준의 퍼포먼스
+* 동시성 & 병렬성 지원
+* Software Transactional Memory
+
+## 하스켈을 사용할 이유
+* 고수준의 추상화로 인해 사용성이 좋고, 견고한 프로그램을 작성할 수 있다.
+* 추상화 수준에 비해 높은 퍼포먼스를 보여준다.
+* 언어의 특성상 Java와 비슷한 포지션으로 사용하기에 적합하다.
+
+## 하스켈을 배울 이유
+하스켈을 실무에서 사용하기 힘든 상황이더라도, 하스켈을 배워볼 이유는 충분하다.
+> 언어가 사고를 지배한다.
+라는 말이 있듯이, 여러가지 프로그래밍 언어, 특히 다른 **패러다임**의 프로그래밍 언어를 배우면 보다 폭넓은 사고를 할 수 있다.
+하스켈은 전통적인 OOP 언어에 없는 여러 개념을 사용하는 언어이므로 이런 면에서 얻어갈 것이 많다.
+
+# Learning by Examples
+
+## Hello, World!
+```haskell
+main = putStrLn "Hello, World!"
+```
+```python
+def main():
+  print("Hello, World!")
+```
+* `main`은 하스켈 프로그램의 진입점이다.
+* 하스켈에서 대상을 정의할 때에는 기본적으로 등호 `=`를 사용한다.
+* `putStrLn`은 문자열 출력을 수행한다.
+사소한 문법적 차이만이 있어보인다... 다른 예시를 더 비교해보자.
+
+## Exam score
+```haskell
+{- This program prints whether you passed the exam or not -}
+main :: IO ()
+main = do
+  putStrLn "What is your name?"
+  name <- getLine
+  putStrLn "What is your score? (0-100)"
+  score <- readLn :: IO Int -- read score as an integer value
+  if score >= 70 then
+    putStrLn (name ++ " passed the exam")
+  else
+    putStrLn (name ++ " failed the exam")
+```
+```python
+# This program prints whether you passed the exam or not
+def main():
+  print("What is yout name?")
+  name = input()
+  print("What is your score? (0-100)")
+  score = int(input()) # read score as an integer value
+  if score >= 70:
+    print(name + " passed the exam")
+  else:
+    print(name + " failed the exam")
+```
+* `{- comment -}`나 `-- comment` 형태로 주석을 달 수 있다.
+* 여러 동작들을 순차적으로 실행할 때에는 `do` 키워드를 사용한다.
+* `getLine`은 입력을 문자열로 읽을 때, `readLn`은 입력을 지정한 타입으로 읽을 때 사용할 수 있다.
+* 외부에서 읽어온 값은 `<-`를 통해 변수에 대입한다. 함수 등의 정의에 사용되는 `=`와는 구분된다.
+* `::`는 타입을 명시하는데에 사용된다. 컴파일러가 자동으로 타입을 추론하지 못한 경우, 혹은 추론이 가능하더라도 타입 명시를 통해 가독성을 높이고 싶은 경우에 사용된다.
+
+## Circle area
+```haskell
+circleArea :: Double -> Double
+circleArea r = pi * r^2
+
+main :: IO ()
+main = do
+  putStr "radius : "
+  r <- readLn :: IO Double
+  putStrLn ("The area of the circle is " ++ show (circleArea r))
+```
+```python
+def circle_area(r):
+  return math.pi * r**2
+
+def main():
+  r = float(input("radius : "))
+  print("The area of the circle is " + str(circle_area(r)))
+```
+* 하스켈에선 함수를 정의하거나 사용할 때 괄호를 붙일 필요가 없다. 즉 `f(x)` 대신 `f x`와 같은 표기를 사용한다.
+* 함수를 정의할 때에는 `f x = y`와 같은 문법을 사용한다. `f`는 함수이름, `x`는 함수의 인자, `y`는 함숫값이다.
+* 함수를 사용할 때에는 `f x`와 같은 표기를 사용한다.
+* 함수의 타입은 `A -> B` 꼴이며 A는 인자의 타입, B는 결과값의 타입이다.
+* `main`의 타입에는 화살표가 없음을 알 수 있다. 사실 `main`은 함수가 아니라 IO action이라 불리는 일종의 프로시저이다. 하스켈에서는 함수와 프로시저의 개념을 엄격하게 구분한다.
