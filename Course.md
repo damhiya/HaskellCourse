@@ -45,12 +45,13 @@ Hello, World!
 ```
 
 ### GHCi (repl)
-GHC는 네이티브 컴파일러지만 REPL 기능 또한 탑재하고 있다. `ghci`를 입력해 REPL을 실행해 보자. GHC 9.0.2 에서는 다음과 같은 출력이 나온다.
+GHC는 네이티브 컴파일러지만 REPL 기능 또한 탑재하고 있다. `ghci`를 입력해 GHCi를 실행해 보자. GHC 9.0.2 에서는 다음과 같은 출력이 나온다.
 ```
 $ ghci
 GHCi, version 9.0.2: https://www.haskell.org/ghc/  :? for help
 ghci> 
 ```
+
 GHCi 명령행에서 아래와 같이 코드를 실행해볼 수 있다.
 ```
 ghci> putStrLn "Hello, World"
@@ -58,6 +59,21 @@ Hello, World
 ghci> x = 3
 ghci> x^2
 9
+```
+
+파일에 저장된 내용을 읽어오고 싶을 때에는 `:load`(단축형 `:l`)을 사용한다.
+```
+ghci> :l Main.hs
+[1 of 1] Compiling Main             ( Main.hs, interpreted )
+Ok, one module loaded.
+ghci>
+```
+
+로딩 되어있는 파일의 수정사항을 반영하고 싶을 때에는 `:reload`(단축형 `:r`)을 사용할 수 있다. 이때 REPL의 상태가 완전히 초기화 된다.
+```
+ghci> :r
+[1 of 1] Compiling Main             ( Main.hs, interpreted )
+Ok, one module loaded.
 ```
 
 ## 기초 예제 비교
